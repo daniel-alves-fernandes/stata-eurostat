@@ -1,0 +1,8 @@
+v 3.2
+d eurostat: import data from Eurostat to Stata.
+d
+d author: Daniel Fernandes
+d email: d.alves.fernandes@law.leidenuniv.nl
+d
+f eurostat.ado
+f eurostat.sthlp

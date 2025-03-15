@@ -6,5 +6,5 @@ Import data from Eurostat.
 To install this package run the following command:
 
 ```
-net install collect_to_frame, from("https://raw.githubusercontent.com/daniel-alves-fernandes/eurostat/main/") 
+net install eurostat, from("https://raw.githubusercontent.com/daniel-alves-fernandes/eurostat/main/") 
 ```

@@ -9,7 +9,7 @@ To install this package run the following command:
 net install eurostat, from("https://raw.githubusercontent.com/daniel-alves-fernandes/stata-eurostat/main/") 
 ```
 
-## Use
+## Syntax
 
 
 Initialize a new dataset from a geo/range list (syntax 1) Eurostat dataset (syntax 2):
@@ -46,3 +46,30 @@ Open the dataset in the Eurostat portal:
 eurostat browser, dataset(dataset_code)
 ```
 
+## Example
+
+```stata
+* Initiate dataset
+eurostat init, geo(Portugal Spain Italy Netherlands) range(2000 2020)
+
+* Import employment data
+eurostat var, gen(male_employment) dataset(lfsi_emp_a) help
+A      // Frequency: Annual
+ACT    // Employment indicator: Persons in the labour force
+M      // Sex: Male
+Y15-64 // Age class: From 15 to 64 years
+PC_POP // Unit: Percentage of the population
+
+eurostat var, gen(female_employment) dataset(lfsi_emp_a)
+A      // Frequency: Annual
+ACT    // Employment indicator: Persons in the labour force
+F      // Sex: Female
+Y15-64 // Age class: From 15 to 64 years
+PC_POP // Unit: Percentage of the population
+
+* Import GDP data
+eurostat var, gen(gdp) dataset(nama_10_gdp) help
+A       // Frequency: Annual
+CP_MNAC // Unit: Current prices, million units of national currency
+B1GQ    // National accounts indicator: Gross domestic product at market prices
+```

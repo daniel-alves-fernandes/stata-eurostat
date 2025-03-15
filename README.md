@@ -22,6 +22,8 @@ eurostat init, geo(geolist) range(startdate enddate)
 eurostat init, dataset(dataset_code)
 ```
 
+Dataset codes can be found at Eurostat's [Database Portal](https://ec.europa.eu/eurostat/web/main/data/database). For instance, to download employment figures navigate to Detailed Datasets > Population and Social Conditions > Labour market > Employment and Unemployment > LFS main indicators > Employment and activity. The first dataset available in this folder is "Employment and activity by sex and age - annual data". Eurostat provides the dataset code between brackets, in this case `lfsi_emp_a`.
+
 Download a dataset:
 
 ```

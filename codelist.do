@@ -45,17 +45,18 @@ program define eurostat_init_check_aggregate, rclass
 
   syntax anything
   quietly: levelsof noteenonly if code == "`anything'", clean
-  if (`r(r)' == 0){
-    noisily: display "`anything' is not an aggregate geo."
-  }
-  else if (`r(r)' > 1){
-    noisily: display "`anything' does not identify a single aggregate geo."
-  }
-  else{
-    local country_list: ///
-    display subinstr("`r(levels)'","This aggregate covers following countries: ","",.)
+  if (`r(r)' == 0) noisily: display ///
+    "`anything' is not an aggregate geo."
 
-    local country_list: display subinstr("`country_list'",",","",.)
+  else if (`r(r)' > 1) noisily: display ///
+    "`anything' does not identify a single aggregate geo."
+
+  else{
+    local country_list: display ///
+      subinstr("`r(levels)'","This aggregate covers following countries: ","",.)
+
+    local country_list: display ///
+      subinstr("`country_list'",",","",.)
     return local country_list `country_list'
   }
 end

@@ -147,15 +147,16 @@ end
 
 /*
 * Syntax try
-eurostat init, ///
-geo(list, [Countries|NUTS1|NUTS2|NUTS3]) /// default "countries"
-time(numlist, [Yearly|Quarterly|Monthly|Daily]) /// default "yearly"
+eurostat stub, gen(pop) d(demo_pjan) help
+A
+NR
+Y??
+T
 
-// geo(PT ES IT, countries) // initiates a dataset with Portugal, Spain and Italy
-// geo(PT ES, NUTS2) // initiates a dataset with NUTS 2 of Portugal and Spain
-// range(2020, quarterly)
-
-**** TIME ****
-*import delimited "`website'/codelist/ESTAT/TIME/`opts'", ///
-*varname(1) delimit(tab) clear
+* Possible programmer function to extend the functionality of stub
+eurostat stubREGEX, gen(pop) d(demo_pjan) help
+A
+NR
+Y\w{1,2}
+T
 */

@@ -15,6 +15,88 @@ program define eurostat_init_syntax_new
 
   import delimited "`website'/codelist/ESTAT/GEO/`opts'", ///
   varname(1) delimit(tab) encoding(utf-8) clear
+
+  * Keep only observations up to United Kingdom (including)
+  tempvar obs
+  gen `obs' = _n
+  levelsof `obs' if strmatch(code,"UK*") // List all UK values
+  local cut: word `r(r)' of `r(levels)'  // Take last value
+  keep in 1/`cut'
+
+  * Keep only standard codes (and old standard codes)
+  keep if inlist(standardcode,"Y","O")
+
+  gen old_code = standardcode == "O"
+  keep code labelenglish old_code noteenonly
+
+  rename (labelenglish noteenonly) (label note)
+
+  * Create groups
+  local aggregates ///
+  EU   /// European Union
+  EA   /// Euro Area
+  NMS  /// New member-states
+  EEA  /// European Economic Area
+  EFTA /// European Free Trade Association
+
+  local countries ///
+  BE /// Belgium
+  BG /// Bulgaria
+  CZ /// Czechia
+  DK /// Denmark
+  DE /// Germany
+  EE /// Estonia
+  IE /// Ireland
+  EL /// Greece
+  ES /// Spain
+  FR /// France
+  HR /// Croatia
+  IT /// Italy
+  CY /// Cyprus
+  LV /// Latvia
+  LT /// Lithuania
+  LU /// Luxembourg
+  HU /// Hungary
+  MT /// Malta
+  NL /// Netherlands
+  AT /// Austria
+  PL /// Poland
+  PT /// Portugal
+  RO /// Romania
+  SI /// Slovenia
+  SK /// Slovakia
+  FI /// Finland
+  SE /// Sweden
+  IS /// Iceland
+  LI /// Liechtenstein
+  NO /// Norway
+  CH /// Switzerland
+  UK /// United Kingdom
+
+  gen group = "", before(code)
+  gen level = "", after(code)
+
+  foreach stub of local aggregates{
+    replace group = "`stub'" if strmatch(code,"`stub'*")
+    replace level = "Aggregate" if strmatch(code,"`stub'*")
+  }
+
+  foreach stub of local countries{
+    replace group = "`stub'" if strmatch(code,"`stub'*")
+
+    replace level = "Country" if code == "`stub'"
+    replace level = "NUTS1" if strmatch(code,"`stub'*") & strlen(code) == 3
+    replace level = "NUTS2" if strmatch(code,"`stub'*") & strlen(code) == 4
+    replace level = "NUTS3" if strmatch(code,"`stub'*") & strlen(code) == 5
+    drop if strmatch(code,"`stub'*") & (strmatch(code,"*_*") | strmatch(code,"*-*"))
+    drop if strmatch(code,"`stub'*") & strmatch(label,"*Unknown*")
+    drop if strmatch(code,"`stub'*") & strmatch(label,"*Extra-Regio*")
+  }
+
+  ** Possible way to do this:
+  // geo(PT ES, [Country|NUTS1|NUTS2|NUTS3])
+  // time(2020 2025, yearly)
+  levelsof strmatch(code,"PT*") & inlist(level,"NUTS3") & old_code == 0
 end
 
 
